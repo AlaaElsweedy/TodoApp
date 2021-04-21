@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todo_app/modules/archived_tasks/archived_tasks.dart';
-import 'package:todo_app/modules/done_tasks/done_tasks.dart';
+import 'package:todo_app/modules/archived_tasks/archived_tasks_screen.dart';
+import 'package:todo_app/modules/done_tasks/done_tasks_screen.dart';
 import 'package:todo_app/modules/new_tasks/new_tasks_screen.dart';
 import 'package:todo_app/shared/cubit/states.dart';
 
@@ -82,6 +82,20 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Future<List<Map>> getDataFromDataBase(database) async {
+    tasks = [];
     return await database.rawQuery("SELECT * FROM TASKS");
+  }
+
+  void deleteData({
+    @required int id,
+  }) {
+    database.rawDelete('DELETE FROM TASKS WHERE id = ?', [id]).then((value) {
+      getDataFromDataBase(database).then((value) {
+        tasks = value;
+        print(tasks);
+        emit(AppGetDataFromDataBseState());
+      });
+      emit(AppDeleteDatabaseState());
+    });
   }
 }

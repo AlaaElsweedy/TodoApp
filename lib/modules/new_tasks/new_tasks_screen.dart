@@ -124,6 +124,9 @@ class NewTasksScreen extends StatelessWidget {
                                       time: selectedTime,
                                       date: selectedDate,
                                     );
+                                    _textController.text = '';
+                                    selectedTime = 'Pick Date';
+                                    selectedDate = 'Pick Time';
                                   }
                                 },
                                 textColor: Colors.white,
@@ -143,63 +146,12 @@ class NewTasksScreen extends StatelessWidget {
             child: Icon(Icons.add),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             child: ListView.separated(
               itemBuilder: (context, index) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(cubit.tasks[index]['date']),
-                              SizedBox(height: 10),
-                              Text(cubit.tasks[index]['time']),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.all(10),
-                              width: 190,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.white,
-                              ),
-                              child: Text(cubit.tasks[index]['title']),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
+                return buildTask(context: context, model: cubit.tasks[index]);
               },
-              separatorBuilder: (context, index) => SizedBox(height: 50),
+              separatorBuilder: (context, index) => SizedBox(height: 40),
               itemCount: cubit.tasks.length,
             ),
           ),

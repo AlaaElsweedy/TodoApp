@@ -8,6 +8,10 @@ class AppInsertIntoDataBseState extends AppStates {}
 
 class AppGetDataFromDataBseState extends AppStates {}
 
+class AppDeleteDatabaseState extends AppStates {}
+
+class AppGetDataLoadingState extends AppStates {}
+
 class AppBottomNavBarChangeIndexState extends AppStates {}
 
 class AppDatePickerState extends AppStates {}
