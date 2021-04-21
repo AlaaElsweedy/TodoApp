@@ -1,3 +1,4 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/shared/cubit/cubit.dart';
 
@@ -95,14 +96,20 @@ Widget buildTask({
                           Icons.check_circle,
                           color: Colors.green,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          AppCubit.get(context)
+                              .updateData(status: 'done', id: model['id']);
+                        },
                       ),
                       IconButton(
                         icon: Icon(
                           Icons.archive,
                           color: Colors.black45,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          AppCubit.get(context)
+                              .updateData(status: 'archived', id: model['id']);
+                        },
                       ),
                     ],
                   ),
@@ -111,5 +118,42 @@ Widget buildTask({
             ),
           ),
         ],
+      ),
+    );
+
+Widget taskBuilder({
+  @required List<Map> tasks,
+}) =>
+    ConditionalBuilder(
+      condition: tasks.length > 0,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: ListView.separated(
+          itemBuilder: (context, index) {
+            return buildTask(context: context, model: tasks[index]);
+          },
+          separatorBuilder: (context, index) => SizedBox(height: 40),
+          itemCount: tasks.length,
+        ),
+      ),
+      fallback: (context) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.menu,
+              size: 40,
+              color: Colors.grey,
+            ),
+            Text(
+              'No Tasks Yet, Please Add Some Tasks',
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
       ),
     );

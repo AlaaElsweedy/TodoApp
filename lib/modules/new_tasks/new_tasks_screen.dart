@@ -145,16 +145,7 @@ class NewTasksScreen extends StatelessWidget {
             },
             child: Icon(Icons.add),
           ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return buildTask(context: context, model: cubit.tasks[index]);
-              },
-              separatorBuilder: (context, index) => SizedBox(height: 40),
-              itemCount: cubit.tasks.length,
-            ),
-          ),
+          body: taskBuilder(tasks: cubit.newTasks),
         );
       },
     );
